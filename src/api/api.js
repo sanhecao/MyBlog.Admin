@@ -15,6 +15,7 @@ axios.interceptors.request.use(
             config.headers.Authorization="Bearer " + storeTemp.state.token;
         }
         saveRefreshtime();
+        console.log(config);
         return config;
     },err=>{
         return Promise.reject(err);
@@ -78,7 +79,7 @@ axios.interceptors.response.use(
 export const BaseApiUrl =base;
 // 登录
 export const requestLogin = params => {
-    console.log(params);
+    console.log('requestLogin',params);
     return axios.get(`${base}/api/Login/JWTToken3.0`, {params: params}).then(res => res.data);
 };
 export const saveRefreshtime=params=>{
@@ -102,8 +103,37 @@ export const getUserByToken=params=>{
            return  res.data
     })
 };
+// 用户管理
+export const getUserListPage=params=>{
+    return axios.get(`${base}/api/Users`,{params:params});
+};
+export const addUser=params=>{
+    return axios.post(`${base}/api/Users`, params);
+};
+export const editUser=params=>{
+    return axios.put(`${base}/api/Users`,params);
+};
+export const removeUser=params=>{
+    return axios.delete(`${base}/api/Users`,{params:params});
+};
+export const batchRemoveUser = params => {
+    return axios.delete(`${base}/api/Users/BatchDelete`, {params: params});//没做
+};// 角色管理
+export const getRoleListPage = params => {
+    return axios.get(`${base}/api/role`, {params: params});
+};
+export const editRole=params=>{
+    return axios.put(`${base}/api/role`,params);
+};
+export const addRole=params=>{
+    return axios.post(`${base}/api/role`,params);
+};
+export const removeRole=params=>{
+    return axios.delete(`${base}/api/role`,{params: params});
+};
 //菜单模块接口
 export  const getNavigationBar=params=>{
 return axios.get(`${base}/api/Permission/GetNavigationBar`,
     {params:params}).then(res=>res.data)
 };
+

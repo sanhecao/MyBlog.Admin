@@ -30,7 +30,7 @@
 <script>
     import {requestLogin, getUserByToken,getNavigationBar} from '../api/api.js';
     import router from "@/router";
-    import {filterAsyncRouter} from "../router/index.js";
+    import {filterAsyncRouter,resetRouter} from "../router/index.js";
 
     export default {
         name: "Login",
@@ -67,17 +67,18 @@
                         this.logining = true;
                         var loginParams={name:this.ruleForm2.account,psw:this.ruleForm2.checkPass};
                         _this.loginStr="登录中...";
-
+                         console.log('登录中...',loginParams);
                         requestLogin(loginParams).then(data=>{
-                            console.log(data);
+                            console.log('requestLogin');
                             if(!data.success){
                                 _this.$message({
                                     message:data.message,
-                                    type:'erroe'
+                                    type:'error'
                                 });
-                                _this.logining=false
+                                _this.logining=false;
                                 _this.loginStr="重新登录";
                             }else{
+                               // console.log(data);
                                 var token=data.token;
                                 _this.$store.commit("saveToken",token);
                                 var curTime=new Date();
@@ -147,12 +148,16 @@
                             message:`登录成功\n 欢迎管理员:${userinfo.uRealName} ! Token 将在${window.localStorage.expires_in / 60} 分钟后过期！}`,
                             duration:6000
                         });
+                        console.log('22212',data.response.children);
                         window.localStorage.router=(JSON.stringify(data.response.children));
                         let getRouter = data.response.children;
-                       // console.log(getRouter);
+                      // console.log('1',getRouter);
                         getRouter=filterAsyncRouter(getRouter);
+                      //  console.log('2',getRouter);
                         router.$addRoutes(getRouter);//动态添加路由
+                        console.log(_this.$route);
                         _this.$router.replace(_this.$route.query.redirect? _this.$route.query.redirect:"/");
+                        console.log(_this.$route);
 
                     }
                 });

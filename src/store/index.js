@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     token:null,
     tokenExpire: null,
+    tagsStoreList:[]
   },
   mutations: {
     saveToken(state,data){
@@ -16,7 +17,11 @@ export default new Vuex.Store({
     saveTokenExpire(state,data){
       state.tokenExpire=data;
       window.localStorage.setItem("TokenExpire",data);
-    }
+    },
+    saveTagsData(state, data) {
+      state.tagsStoreList = data;
+      sessionStorage.setItem("Tags",data)
+    },
   },
   actions: {
   },
